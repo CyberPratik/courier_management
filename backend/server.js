@@ -108,7 +108,20 @@ app.post('/api/orders', (req, res) => {
                   console.error('Error inserting payment:', err);
                   return res.status(500).json({ error: 'Failed to create payment' });
                 }
-                res.status(200).json({ message: 'Order created successfully', orderId });
+
+                // Insert tracking status into the Tracking table
+                db.query(
+                  'INSERT INTO Tracking (order_id, current_location, status) VALUES (?, ?, ?)',
+                  [orderId, 'shipping yard', 'pending'],
+                  (err) => {
+                    if (err) {
+                      console.error('Error inserting tracking status:', err);
+                      return res.status(500).json({ error: 'Failed to create tracking status' });
+                    }
+                    console.log('Tracking status created successfully');
+                    res.status(200).json({ message: 'Order created successfully', orderId });
+                  }
+                );
               }
             );
           }
