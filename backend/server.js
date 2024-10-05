@@ -77,7 +77,7 @@ app.post('/api/orders', (req, res) => {
     // Function to insert order
     function insertOrder(customerId) {
       // Automatically fetch a courier_id from the Couriers table
-      db.query('SELECT courier_id FROM Couriers ORDER BY RAND() LIMIT 1', (err, courierResults) => { // Randomly select a courier
+      db.query('SELECT courier_id FROM Couriers ORDER BY RAND() LIMIT 1', (err, courierResults) => {
         if (err || courierResults.length === 0) {
           console.error('Error fetching courier:', err || 'No couriers available');
           return res.status(500).json({ error: 'Failed to fetch courier' });
@@ -85,6 +85,7 @@ app.post('/api/orders', (req, res) => {
 
         const courierId = courierResults[0].courier_id;
 
+        // Insert order into Orders table
         db.query(
           'INSERT INTO Orders (customer_id, courier_id, pickup_address, delivery_address, total_amount) VALUES (?, ?, ?, ?, ?)',
           [customerId, courierId, pickupAddress, deliveryAddress, totalAmount],
@@ -96,10 +97,10 @@ app.post('/api/orders', (req, res) => {
             const orderId = result.insertId;
             console.log(`Order created with ID: ${orderId}`);
 
-            // Generate a transaction_id (you can customize this logic)
-            const transactionId = `TXN${Date.now()}`; // Simple unique transaction ID
+            // Generate a transaction_id
+            const transactionId = `TXN${Date.now()}`;
 
-            // Insert payment details into the Payments table
+            // Insert payment details into Payments table
             db.query(
               'INSERT INTO Payments (order_id, amount, payment_method, transaction_id) VALUES (?, ?, ?, ?)',
               [orderId, totalAmount, paymentMethod, transactionId],
@@ -109,10 +110,10 @@ app.post('/api/orders', (req, res) => {
                   return res.status(500).json({ error: 'Failed to create payment' });
                 }
 
-                // Insert tracking status into the Tracking table
+                // Insert initial tracking status into the Tracking table
                 db.query(
-                  'INSERT INTO Tracking (order_id, current_location, status) VALUES (?, ?, ?)',
-                  [orderId, 'shipping yard', 'pending'],
+                  'INSERT INTO Tracking (order_id, status) VALUES (?, ?)',
+                  [orderId, 'pending'],
                   (err) => {
                     if (err) {
                       console.error('Error inserting tracking status:', err);
@@ -134,7 +135,7 @@ app.post('/api/orders', (req, res) => {
 // READ: Route to get all orders for the admin
 app.get('/admin/orders', (req, res) => {
   db.query(
-    `SELECT o.order_id, c.name AS customer_name, o.pickup_address, o.delivery_address, o.total_amount, o.status, p.payment_method, p.status AS payment_status
+    `SELECT o.order_id, c.name AS customer_name, o.pickup_address, o.delivery_address, o.total_amount, o.status AS order_status, p.payment_method, p.status AS payment_status
      FROM Orders o
      JOIN Customers c ON o.customer_id = c.customer_id
      JOIN Payments p ON o.order_id = p.order_id`,
@@ -144,6 +145,30 @@ app.get('/admin/orders', (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch orders' });
       }
       res.status(200).json(results);
+    }
+  );
+});
+
+// READ: Route to fetch tracking information
+app.get('/api/tracking/:orderId', (req, res) => {
+  const orderId = req.params.orderId;
+
+  db.query(
+    `SELECT o.order_id, c.name AS customer_name, c.phone AS customer_number, t.status AS tracking_status, o.delivery_address, o.total_amount
+     FROM Orders o
+     JOIN Customers c ON o.customer_id = c.customer_id
+     JOIN Tracking t ON o.order_id = t.order_id
+     WHERE o.order_id = ?`,
+    [orderId],
+    (err, results) => {
+      if (err) {
+        console.error('Error fetching tracking information:', err);
+        return res.status(500).json({ error: 'Failed to fetch tracking information' });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+      res.status(200).json(results[0]); // Return the first result
     }
   );
 });

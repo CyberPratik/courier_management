@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Dropdown, Button } from 'react-bootstrap';
+import { Card, Row, Col, Dropdown, Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -22,7 +23,6 @@ const AdminDashboard = () => {
   const handleStatusChange = async (orderId, status) => {
     try {
       await axios.put(`http://localhost:5003/admin/update-order-status/${orderId}`, { status });
-      // Update the local state for the order's status
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.order_id === orderId ? { ...order, status } : order
@@ -36,7 +36,6 @@ const AdminDashboard = () => {
   const handlePaymentStatusChange = async (orderId, paymentStatus) => {
     try {
       await axios.put(`http://localhost:5003/admin/update-payment-status/${orderId}`, { payment_status: paymentStatus });
-      // Update the local state for the payment status
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.order_id === orderId ? { ...order, payment_status: paymentStatus } : order
@@ -47,9 +46,14 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleViewDetails = (orderId) => {
-    // Redirect to the order details page if required
-    console.log('View details for Order ID:', orderId);
+  const handleViewDetails = (order) => {
+    setSelectedOrder(order);
+    setShowDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setShowDetails(false);
+    setSelectedOrder(null);
   };
 
   return (
@@ -67,7 +71,7 @@ const AdminDashboard = () => {
           <Card className="info-card">
             <Card.Body>
               <Card.Title>Total Couriers</Card.Title>
-              <Card.Text>{orders.length}</Card.Text> {/* Total couriers equal to the number of orders */}
+              <Card.Text>{orders.length}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -117,7 +121,7 @@ const AdminDashboard = () => {
                         </div>
                       </Col>
                       <Col md={4} className="text-end">
-                        <Button variant="primary" onClick={() => handleViewDetails(order.order_id)}>View Details</Button>
+                        <Button variant="primary" onClick={() => handleViewDetails(order)}>View Details</Button>
                       </Col>
                     </Row>
                   </Card.Body>
@@ -127,6 +131,29 @@ const AdminDashboard = () => {
           </Card>
         </Col>
       </Row>
+
+      {/* Modal for Order Details */}
+      <Modal show={showDetails} onHide={handleCloseDetails}>
+        <Modal.Header closeButton>
+          <Modal.Title>Order Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedOrder && (
+            <div>
+              <p><strong>Order ID:</strong> {selectedOrder.order_id}</p>
+              <p><strong>Customer:</strong> {selectedOrder.customer_name}</p>
+              <p><strong>Pickup:</strong> {selectedOrder.pickup_address}</p>
+              <p><strong>Delivery:</strong> {selectedOrder.delivery_address}</p>
+              <p><strong>Status:</strong> {selectedOrder.status}</p>
+              <p><strong>Payment Status:</strong> {selectedOrder.payment_status}</p>
+              <p><strong>Tracking Info:</strong> {selectedOrder.tracking_info}</p> {/* Update this field according to your backend */}
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDetails}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
