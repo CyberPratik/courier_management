@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Dropdown } from 'react-bootstrap';
+import { Card, Row, Col, Dropdown, Button } from 'react-bootstrap';
 import axios from 'axios';
+
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
-  const [couriers, setCouriers] = useState([]);
 
-  // Fetch orders and couriers data from the backend
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -17,28 +16,13 @@ const AdminDashboard = () => {
       }
     };
 
-    const fetchCouriers = async () => {
-      // Fetch couriers data from your API if you have one.
-      // Placeholder for courier fetching logic if needed.
-      const sampleCouriers = [
-        { courier_id: 1, name: 'Courier A', vehicle_type: 'Bike' },
-        { courier_id: 2, name: 'Courier B', vehicle_type: 'Van' },
-        { courier_id: 3, name: 'Courier C', vehicle_type: 'Truck' },
-      ];
-      setCouriers(sampleCouriers);
-    };
-
     fetchOrders();
-    fetchCouriers();
-    
-    // Optionally, set an interval to fetch orders every few seconds for live updates
-    const interval = setInterval(fetchOrders, 5000); // Fetch every 5 seconds
-    return () => clearInterval(interval);
   }, []);
 
   const handleStatusChange = async (orderId, status) => {
     try {
       await axios.put(`http://localhost:5003/admin/update-order-status/${orderId}`, { status });
+      // Update the local state for the order's status
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.order_id === orderId ? { ...order, status } : order
@@ -52,6 +36,7 @@ const AdminDashboard = () => {
   const handlePaymentStatusChange = async (orderId, paymentStatus) => {
     try {
       await axios.put(`http://localhost:5003/admin/update-payment-status/${orderId}`, { payment_status: paymentStatus });
+      // Update the local state for the payment status
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.order_id === orderId ? { ...order, payment_status: paymentStatus } : order
@@ -62,95 +47,86 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleVehicleTypeChange = async (orderId, vehicleType) => {
-    // If you have a way to update the vehicle type in the database, implement it here.
-    // For now, this just updates the local state.
-    const updatedOrders = orders.map((order) =>
-      order.order_id === orderId ? { ...order, vehicle_type: vehicleType } : order
-    );
-    setOrders(updatedOrders);
+  const handleViewDetails = (orderId) => {
+    // Redirect to the order details page if required
+    console.log('View details for Order ID:', orderId);
   };
 
   return (
-    <div className="p-4">
-      <h3>Admin Dashboard</h3>
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Customer Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Pickup Address</th>
-            <th>Delivery Address</th>
-            <th>Total Amount</th>
-            <th>Payment Method</th>
-            <th>Order Date</th>
-            <th>Status</th>
-            <th>Payment Status</th>
-            <th>Vehicle Type</th>
-            <th>Courier Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => {
-            const courier = couriers.find(c => c.courier_id === order.courier_id);
-            return (
-              <tr key={order.order_id}>
-                <td>{order.order_id}</td>
-                <td>{order.customer_name}</td>
-                <td>{order.email}</td>
-                <td>{order.phone}</td>
-                <td>{order.pickup_address}</td>
-                <td>{order.delivery_address}</td>
-                <td>{order.total_amount}</td>
-                <td>{order.payment_method}</td>
-                <td>{order.order_date}</td>
-                <td>
-                  <Dropdown onSelect={(status) => handleStatusChange(order.order_id, status)}>
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                      {order.status}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="pending">Pending</Dropdown.Item>
-                      <Dropdown.Item eventKey="in transit">In Transit</Dropdown.Item>
-                      <Dropdown.Item eventKey="delivered">Delivered</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </td>
-                <td>
-                  <Dropdown onSelect={(paymentStatus) => handlePaymentStatusChange(order.order_id, paymentStatus)}>
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                      {order.payment_status}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="pending">Pending</Dropdown.Item>
-                      <Dropdown.Item eventKey="completed">Completed</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </td>
-                <td>
-                  <Dropdown onSelect={(vehicleType) => handleVehicleTypeChange(order.order_id, vehicleType)}>
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                      {order.vehicle_type}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="Bike">Bike</Dropdown.Item>
-                      <Dropdown.Item eventKey="Van">Van</Dropdown.Item>
-                      <Dropdown.Item eventKey="Truck">Truck</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </td>
-                <td>{courier ? courier.name : 'Unknown'}</td>
-                <td>
-                  <Button variant="primary">View Details</Button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+    <div className="dashboard-container">
+      <Row>
+        <Col md={4}>
+          <Card className="info-card">
+            <Card.Body>
+              <Card.Title>Total Orders</Card.Title>
+              <Card.Text>{orders.length}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="info-card">
+            <Card.Body>
+              <Card.Title>Total Couriers</Card.Title>
+              <Card.Text>{orders.length}</Card.Text> {/* Total couriers equal to the number of orders */}
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="info-card">
+            <Card.Body>
+              <Card.Title>Pending Payments</Card.Title>
+              <Card.Text>{orders.filter(order => order.payment_status === 'pending').length}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col md={12}>
+          <Card className="order-card">
+            <Card.Body>
+              <Card.Title>Orders</Card.Title>
+              {orders.map((order) => (
+                <Card key={order.order_id} className="mb-3">
+                  <Card.Body>
+                    <Row>
+                      <Col md={4}>
+                        <p><strong>Order ID:</strong> {order.order_id}</p>
+                        <p><strong>Customer:</strong> {order.customer_name}</p>
+                        <p><strong>Pickup:</strong> {order.pickup_address}</p>
+                        <p><strong>Delivery:</strong> {order.delivery_address}</p>
+                      </Col>
+                      <Col md={4}>
+                        <div className="d-flex flex-column">
+                          <Dropdown onSelect={(status) => handleStatusChange(order.order_id, status)} className="mb-2">
+                            <Dropdown.Toggle variant="info" className="w-100">Status: {order.status}</Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item eventKey="pending">Pending</Dropdown.Item>
+                              <Dropdown.Item eventKey="in transit">In Transit</Dropdown.Item>
+                              <Dropdown.Item eventKey="delivered">Delivered</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+
+                          <Dropdown onSelect={(paymentStatus) => handlePaymentStatusChange(order.order_id, paymentStatus)}>
+                            <Dropdown.Toggle variant="warning" className="w-100">Payment: {order.payment_status}</Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item eventKey="pending">Pending</Dropdown.Item>
+                              <Dropdown.Item eventKey="completed">Completed</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </div>
+                      </Col>
+                      <Col md={4} className="text-end">
+                        <Button variant="primary" onClick={() => handleViewDetails(order.order_id)}>View Details</Button>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };
