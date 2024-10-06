@@ -1,31 +1,75 @@
+/* src/styles/Login.css */
+
 .login-container {
-    min-height: 100vh; /* Ensure it takes the full height of the viewport */
-    background-color: #f8f9fa; /* Light background color */
-    padding: 20px;
-  }
-  
-  .login-card {
-    max-width: 400px; /* Set a max width for the card */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    padding: 20px;
-    margin-bottom: 10%;
-  }
-  
-  .text-center {
-    margin-bottom: 20px; /* Space below the title */
-  }
-  
-  button {
-    transition: background-color 0.3s, color 0.3s; /* Smooth hover transition */
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    color: white; /* Text color on hover */
-  }
-  
-  .alert {
-    border-radius: 8px; /* Rounded corners for alert */
-  }
-  
+  min-height: 100vh; /* Ensure it takes the full height of the viewport */
+  background-color: #f8f9fa; /* Light background color */
+  display: flex; /* Use flexbox to center the card */
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  padding: 20px;
+}
+
+.login-card {
+  width: 90%; /* Set a wider width for the card */
+  max-width: 500px; /* Set a max width for the card */
+  height: auto; /* Allow the height to adjust based on content */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  padding: 40px; /* Increased padding for more content space */
+  background-color: #ffffff; /* White background for the card */
+  transition: transform 0.3s; /* Smooth scale effect on hover */
+}
+
+.login-card:hover {
+  transform: scale(1.02); /* Scale effect on hover */
+}
+
+.text-center {
+  margin-bottom: 20px; /* Space below the title */
+}
+
+h2 {
+  font-size: 2rem; /* Font size for the title */
+  color: #343a40; /* Darker text color */
+}
+
+p {
+  color: #6c757d; /* Gray color for subtitle */
+  margin-bottom: 20px; /* Space below subtitle */
+}
+
+button {
+  transition: background-color 0.3s, color 0.3s; /* Smooth hover transition */
+  padding: 10px 20px; /* Add padding for buttons */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  color: white; /* Text color on hover */
+}
+
+.alert {
+  border-radius: 8px; /* Rounded corners for alert */
+  padding: 10px; /* Add padding */
+  margin-bottom: 20px; /* Space below the alert */
+}
+
+/* Additional styling for inputs */
+input[type="text"],
+input[type="password"] {
+  width: 100%; /* Full width inputs */
+  padding: 10px; /* Padding inside inputs */
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #ced4da; /* Border color */
+  margin-bottom: 15px; /* Space below inputs */
+  transition: border-color 0.3s; /* Smooth border color transition */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #0056b3; /* Change border color on focus */
+  outline: none; /* Remove outline */
+}

@@ -5,6 +5,7 @@ import CustomerForm from './components/CustomerForm';
 import AdminDashboard from './components/AdminDashboard';
 import OrderTracking from './components/OrderTracking';
 import Login from './components/Login';
+import HomePage from './components/HomePage';
 
 const App = () => {
   return (
@@ -24,14 +25,14 @@ const App = () => {
               <span className="navbar-toggler-icon"></span>
             </button>
             <Link className="navbar-brand" to="/">
-              Courier Management System
+              Rocket Couriers
             </Link>
           </div>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/">
-                  Customer Form
+                  Home
                 </Link>
               </li>
               <li className="nav-item">
@@ -51,7 +52,8 @@ const App = () => {
 
       <div className="container my-4">
         <Routes>
-          <Route path="/" element={<CustomerForm />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/customer-form" element={<CustomerForm />} /> {/* Add this route */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/track-order" element={<OrderTracking />} />
           <Route path="/login" element={<Login />} />

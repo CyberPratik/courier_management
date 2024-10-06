@@ -1,0 +1,65 @@
+/* src/styles/HomePage.css */
+
+.homepage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative; /* Necessary for the absolute positioning of the slideshow */
+    color: white;
+  }
+  
+  .slideshow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    overflow: hidden; /* Hide overflow */
+  }
+  
+  .slideshow-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the entire container */
+    opacity: 0; /* Start invisible */
+    transition: opacity 1s ease-in-out; /* Fade effect */
+    position: absolute; /* Allow positioning */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+  }
+  
+  /* Show the image when it is active */
+  .slideshow-image.active {
+    opacity: 1; /* Fully visible when active */
+  }
+  
+  .homepage-content {
+    position: relative; /* Keep it above the slideshow */
+    z-index: 1; /* Ensure content is above the slideshow */
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for contrast */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Darker shadow for depth */
+  }
+  
+  .homepage-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .homepage-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: aliceblue;
+  }
+  
+  .homepage-buttons .btn {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 25px; /* Rounded buttons */
+  }
+  
