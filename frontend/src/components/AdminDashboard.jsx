@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Dropdown, Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import '../styles/AdminDashboard.css'; // Import the custom CSS file
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -63,7 +64,7 @@ const AdminDashboard = () => {
           <Card className="info-card">
             <Card.Body>
               <Card.Title>Total Orders</Card.Title>
-              <Card.Text>{orders.length}</Card.Text>
+              <Card.Text className="info-text">{orders.length}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -71,7 +72,7 @@ const AdminDashboard = () => {
           <Card className="info-card">
             <Card.Body>
               <Card.Title>Total Couriers</Card.Title>
-              <Card.Text>{orders.length}</Card.Text>
+              <Card.Text className="info-text">{orders.length}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -79,7 +80,7 @@ const AdminDashboard = () => {
           <Card className="info-card">
             <Card.Body>
               <Card.Title>Pending Payments</Card.Title>
-              <Card.Text>{orders.filter(order => order.payment_status === 'pending').length}</Card.Text>
+              <Card.Text className="info-text">{orders.filter(order => order.payment_status === 'pending').length}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -91,7 +92,7 @@ const AdminDashboard = () => {
             <Card.Body>
               <Card.Title>Orders</Card.Title>
               {orders.map((order) => (
-                <Card key={order.order_id} className="mb-3">
+                <Card key={order.order_id} className="mb-3 order-item">
                   <Card.Body>
                     <Row>
                       <Col md={4}>

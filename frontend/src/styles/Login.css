@@ -1,0 +1,31 @@
+.login-container {
+    min-height: 100vh; /* Ensure it takes the full height of the viewport */
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px;
+  }
+  
+  .login-card {
+    max-width: 400px; /* Set a max width for the card */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    padding: 20px;
+    margin-bottom: 10%;
+  }
+  
+  .text-center {
+    margin-bottom: 20px; /* Space below the title */
+  }
+  
+  button {
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover transition */
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: white; /* Text color on hover */
+  }
+  
+  .alert {
+    border-radius: 8px; /* Rounded corners for alert */
+  }
+  

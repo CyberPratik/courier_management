@@ -1,0 +1,43 @@
+.container {
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background for contrast */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  h2 {
+    color: #343a40; /* Darker text color */
+  }
+  
+  .btn-primary {
+    background-color: #007bff; /* Custom primary button color */
+    border-color: #007bff; /* Match border to button */
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3; /* Darker on hover */
+    border-color: #0056b3; /* Darker border on hover */
+  }
+  
+  .alert {
+    font-weight: bold; /* Make error messages stand out */
+  }
+  
+  .card {
+    border: none; /* Remove default card border */
+  }
+  
+  .card-title {
+    font-size: 1.5rem; /* Increase title size */
+    color: #495057; /* Darker color for the title */
+  }
+  
+  .card-text {
+    font-size: 1.1rem; /* Increase text size for better readability */
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Subtle shadow for elements */
+  }
+  

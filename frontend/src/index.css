@@ -1,0 +1,40 @@
+/* Align navbar brand and hamburger */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  /* Ensure the hamburger and brand align on mobile screens */
+  @media (max-width: 992px) {
+    .navbar-toggler {
+      margin-right: 10px;
+    }
+  
+    .navbar-collapse {
+      text-align: right;
+    }
+  }
+  
+  /* Optional: Style navbar links */
+  .nav-link {
+    color: #343a40;
+    padding: 10px 15px;
+  }
+  
+  .nav-link:hover {
+    color: #0056b3;
+  }
+  
+  /* Mobile-specific styles for the toggler */
+  @media (max-width: 768px) {
+    .navbar-nav {
+      text-align: center;
+      padding: 10px 0;
+    }
+  
+    .collapse.show {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+    }
+  }
+  
