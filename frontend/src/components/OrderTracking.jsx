@@ -33,10 +33,10 @@ const OrderTracking = () => {
       <h2 className="text-center mb-4">Track Your Order</h2>
       <Form onSubmit={handleTrackOrder} className="mb-4">
         <Form.Group controlId="formOrderId">
-          <Form.Label>Order ID</Form.Label>
+          <Form.Label>Tracking Id</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter your Order ID"
+            placeholder="Enter your Tracking ID"
             value={orderId}
             onChange={(e) => setOrderId(e.target.value)}
             required
